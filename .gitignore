@@ -1,0 +1,5 @@
+apikey.json
+app/google-services.json
+.idea/*
+.gradle/*
+local.properties

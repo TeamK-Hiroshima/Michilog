@@ -10,47 +10,8 @@ import com.oec.sdl.vehicle.Jsons.JsonParser;
 import java.util.Date;
 
 // データ送信の実装
-public class DataSender implements IDataSender {
+public abstract class DataSender{
 
-    @Override
-    public void sendEvaluation(EvaluationType evaluationType) {
-
-        EvaluationDto evaluationDto = new EvaluationDto();
-
-        evaluationDto.evaluationType = evaluationType;
-        evaluationDto.date = new Date(System.currentTimeMillis());
-
-        // TODO ここで GPS と 車種を取得する（車種は将来対応？）
-        evaluationDto.location  = new Location(10, 10);
-
-
-        // JSON に変換
-        String json = JsonParser.Parse(evaluationDto);
-
-        System.out.println("[JSON生成<EvaluationDto>]" + json);
-
-        doPostJson(json);
-    }
-
-    @Override
-    public void sendVehicleEvent(VehicleEventType vehicleEventType) {
-        VehicleEventDto vehicleEventDto = new VehicleEventDto();
-
-        vehicleEventDto.vehicleEventType = vehicleEventType;
-        vehicleEventDto.date= new Date(System.currentTimeMillis());
-
-        // TODO ここで GPS と 車種を取得する（車種は将来対応？）
-        vehicleEventDto.location  = new Location("123", "123");
-
-        // JSON に変換
-        String json = JsonParser.Parse(vehicleEventDto);
-
-        System.out.println("[JSON生成<VehicleEventDto>]" + json);
-
-        doPostJson(json);
-    }
-
-    @Override
     public void sendEvaluationsWithGps(EvaluationType evaluationType, String Lon, String Lat){
         EvaluationDto evaluationDto = new EvaluationDto();
 
@@ -60,16 +21,9 @@ public class DataSender implements IDataSender {
         // TODO ここで GPS と 車種を取得する（車種は将来対応？）
         evaluationDto.location  = new Location(Lat, Lon);
 
-        // JSON に変換
-        String json = JsonParser.Parse(evaluationDto);
-
-        System.out.println("[JSON生成<EvaluationDto>]" + json);
-
-        doPostJson(json);
-
+        sendEvaluationsWithGpsCore(evaluationDto);
     }
 
-    @Override
     public void sendVehicleEventWithGps(VehicleEventType vehicleEventType, String Lon, String Lat){
         VehicleEventDto vehicleEventDto = new VehicleEventDto();
 
@@ -79,16 +33,10 @@ public class DataSender implements IDataSender {
         // TODO ここで GPS と 車種を取得する（車種は将来対応？）
         vehicleEventDto.location  = new Location(Lat, Lon);
 
-        // JSON に変換
-        String json = JsonParser.Parse(vehicleEventDto);
-
-        System.out.println("[JSON生成<VehicleEventDto>]" + json);
-
-        doPostJson(json);
+        sendVehicleEventWithGpsCore(vehicleEventDto);
     }
 
-    void doPostJson(String json){
-        AsyncHttpSender task = new AsyncHttpSender();
-        task.execute(json);
-    }
+    abstract protected void sendEvaluationsWithGpsCore(EvaluationDto evaluationDto);
+
+    abstract protected void sendVehicleEventWithGpsCore(VehicleEventDto vehicleEventDto);
 }

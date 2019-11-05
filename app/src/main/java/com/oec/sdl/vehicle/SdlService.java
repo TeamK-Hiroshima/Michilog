@@ -9,8 +9,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.oec.sdl.vehicle.Dto.EvaluationDto;
+import com.oec.sdl.vehicle.Dto.Location;
+import com.oec.sdl.vehicle.Firebase.FirebaseDataSender;
+import com.oec.sdl.vehicle.Http.HttpDataSender;
 import com.smartdevicelink.managers.CompletionListener;
 import com.smartdevicelink.managers.SdlManager;
 import com.smartdevicelink.managers.SdlManagerListener;
@@ -50,6 +63,8 @@ import com.smartdevicelink.transport.TCPTransportConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -74,7 +89,15 @@ public class SdlService extends Service {
 	// variable to create and call functions of the SyncProxy
 	private SdlManager sdlManager = null;
 
+	private final DataSender dataSender;
+
 	TireStatus tireStatusTmp = null;
+
+	public SdlService(){
+		// DI にしたいけど、Intent とかいうよくわからんやり方でインスタンス生成されるみたいなので
+		// とりあえずクラス内で実体を生成するよ
+		dataSender = new FirebaseDataSender();
+	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -583,9 +606,8 @@ public class SdlService extends Service {
 			@Override
 			public void onResponse(int correlationId, RPCResponse response) {
 				if(response.getSuccess()){
-					IDataSender send = new DataSender();
 					GPSData gpsInfo= ((GetVehicleDataResponse) response).getGps();
-					send.sendEvaluationsWithGps(EvaluationType.Good,gpsInfo.getLongitudeDegrees().toString(),gpsInfo.getLatitudeDegrees().toString());
+					dataSender.sendEvaluationsWithGps(EvaluationType.Good,gpsInfo.getLongitudeDegrees().toString(),gpsInfo.getLatitudeDegrees().toString());
 					Log.i("SdlService", "Lon:"+gpsInfo.getLongitudeDegrees().toString() + "Lat:" + gpsInfo.getLatitudeDegrees());
 				}else{
 					Log.i("SdlService", "GetVehicleData was rejected.");
@@ -602,9 +624,8 @@ public class SdlService extends Service {
 			@Override
 			public void onResponse(int correlationId, RPCResponse response) {
 				if(response.getSuccess()){
-					IDataSender send = new DataSender();
 					GPSData gpsInfo= ((GetVehicleDataResponse) response).getGps();
-					send.sendEvaluationsWithGps(EvaluationType.Bad,gpsInfo.getLongitudeDegrees().toString(),gpsInfo.getLatitudeDegrees().toString());
+					dataSender.sendEvaluationsWithGps(EvaluationType.Bad,gpsInfo.getLongitudeDegrees().toString(),gpsInfo.getLatitudeDegrees().toString());
 					Log.i("SdlService", "Lon:"+gpsInfo.getLongitudeDegrees().toString() + "Lat:" + gpsInfo.getLatitudeDegrees());
 				}else{
 					Log.i("SdlService", "GetVehicleData was rejected.");
@@ -643,9 +664,8 @@ public class SdlService extends Service {
 			@Override
 			public void onResponse(int correlationId, RPCResponse response) {
 				if(response.getSuccess()){
-					IDataSender send = new DataSender();
 					GPSData gpsInfo= ((GetVehicleDataResponse) response).getGps();
-					send.sendVehicleEventWithGps(vehicleEventType,gpsInfo.getLongitudeDegrees().toString(),gpsInfo.getLatitudeDegrees().toString());
+					dataSender.sendVehicleEventWithGps(vehicleEventType,gpsInfo.getLongitudeDegrees().toString(),gpsInfo.getLatitudeDegrees().toString());
 					Log.i("SdlService", "Lon:"+gpsInfo.getLongitudeDegrees().toString() + "Lat:" + gpsInfo.getLatitudeDegrees());
 				}else{
 					Log.i("SdlService", "GetVehicleData was rejected.");
