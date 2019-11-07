@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "7382496548",
+    "firebase_url": "https://sdl-app-android.firebaseio.com",
+    "project_id": "sdl-app-android",
+    "storage_bucket": "sdl-app-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7382496548:android:c74af1348bb3c2c354afb1",
+        "android_client_info": {
+          "package_name": "com.oec.sdl.vehicle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7382496548-1ct09m10hij5cf2e9jo8js3cgp2papo6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTkZauFFN7aMDH88QINUYl5GEcv0ctNR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7382496548-1ct09m10hij5cf2e9jo8js3cgp2papo6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
