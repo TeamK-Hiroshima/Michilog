@@ -68,7 +68,7 @@ public class SdlService extends Service {
 	// TCP/IP transport config
 	// The default port is 12345
 	// The IP is of the machine that is running SDL Core
-	private static final int TCP_PORT = 19827;
+	private static final int TCP_PORT = 10222;
 	private static final String DEV_MACHINE_IP_ADDRESS = "m.sdl.tools";
 
 	// variable to create and call functions of the SyncProxy
@@ -490,7 +490,7 @@ public class SdlService extends Service {
 					SdlArtwork state_artworkGood1 = new SdlArtwork("good.png", FileType.GRAPHIC_PNG, R.drawable.good, true);
 					SdlArtwork state_artworkGood2 = new SdlArtwork("good2.png", FileType.GRAPHIC_PNG, R.drawable.good2, true);
 					SoftButtonState softButton01State1 = new SoftButtonState("button01_state1", "いいねぇ〜", state_artworkGood1);
-					SoftButtonState softButton01State2 = new SoftButtonState("button01_state2", "いいねぇ〜", state_artworkGood2);
+					SoftButtonState softButton01State2 = new SoftButtonState("button01_state2", "いいねぇ〜", state_artworkGood1);
 
 					List<SoftButtonState> softButtonStates = Arrays.asList(softButton01State1, softButton01State2);
 
@@ -506,7 +506,7 @@ public class SdlService extends Service {
 							sdlManager.getScreenManager().beginTransaction();
 
 							//画像を登録する
-							SdlArtwork artwork = new SdlArtwork("title2.png", FileType.GRAPHIC_PNG, R.drawable.title2, true);
+							SdlArtwork artwork = new SdlArtwork("logo1.png", FileType.GRAPHIC_PNG, R.drawable.logo1, true);
 							sdlManager.getScreenManager().setPrimaryGraphic(artwork);
 							sdlManager.getScreenManager().commit(new CompletionListener() {
 								@Override
@@ -528,7 +528,7 @@ public class SdlService extends Service {
 					SdlArtwork state_artworkBad = new SdlArtwork("bad.png", FileType.GRAPHIC_PNG, R.drawable.bad, true);
 					SdlArtwork state_artworkBad2 = new SdlArtwork("bad2.png", FileType.GRAPHIC_PNG, R.drawable.bad2, true);
 					SoftButtonState softButton02State1 = new SoftButtonState("button02_state1", "悪いねぇ〜", state_artworkBad);
-					SoftButtonState softButton02State2 = new SoftButtonState("button02_state2", "悪いねぇ〜", state_artworkBad2);
+					SoftButtonState softButton02State2 = new SoftButtonState("button02_state2", "悪いねぇ〜", state_artworkBad);
 
 					List<SoftButtonState> softButtonStatesBad = Arrays.asList(softButton02State1, softButton02State2);
 
